@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: colored-canavas
+spec:
+  selector:
+    matchLabels:
+      app: canavas
+  template:
+    metadata:
+      labels:
+        app: canavas
+    spec:
+      containers:
+      - name: blue
+        image: avinashdesireddy/colored-canavas:latest
+        imagePullPolicy: Always
+        env:
+        - name: COLOR
+          value: "#7f77c9"
+        - name: TITLE
+          value: "Demo"
+        - name: DESCRIPTION
+          value: "Colored Canavas demo"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: canavas
+spec:
+  selector:
+    app: canavas
+  ports:
+  - port: 8080
+    targetPort: 8080
