@@ -33,6 +33,7 @@ type DBConnectionPageVars struct {
 	DB_Database string
 	DB_User     string
 	Status      bool
+    Message     string
 }
 
 func main() {
@@ -85,13 +86,25 @@ func MySQL(w http.ResponseWriter, r *http.Request) {
 	DB_User := os.Getenv("DB_User")
 	DB_Password := os.Getenv("DB_Password")
 	var status bool
+    var statusMessage string
 
-	db, err := sql.Open("mysql", DB_User+":"+DB_Password+"@("+DB_Host+")/"+DB_Database)
+    mysql_string := DB_User+":"+DB_Password+"@tcp("+DB_Host+":3306)/"+DB_Database+"?timeout=5s"
+	db, err := sql.Open("mysql", mysql_string)
 	if err != nil {
+        log.Printf("Error %s when opening DB\n", err)
 		status = false
-		panic(err.Error())
 	}
 	defer db.Close()
+
+    err = db.Ping()
+
+    if err != nil {
+        statusMessage = err.Error()
+        status = false
+    } else {
+        statusMessage = "Connected"
+        status = true
+    }
 
 	MySQLPageVars := DBConnectionPageVars{
 		Color:       os.Getenv("COLOR"),
@@ -100,6 +113,7 @@ func MySQL(w http.ResponseWriter, r *http.Request) {
 		DB_Database: DB_Database,
 		DB_User:     DB_User,
 		Status:      status,
+        Message:     statusMessage,
 	}
 
 	t, err := template.ParseFiles("mysql.html")
