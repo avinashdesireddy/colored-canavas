@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>{{or .Title "Colored Canavas"}}</title>
+    <title>{{ .Title }}</title>
     <style type="text/css">
         html, body {
             height: 100%;
@@ -18,22 +18,33 @@
         }
         .wrapper {
             display: inline-block;
-            text-align: center;
+            text-align: left;
             height: 30%;
-            padding: 20px;
             vertical-align: middle;
             color: #565656;
             background: #f5f2f7;
             border: 20px solid #e6e6e6;
             margin-top: 20%;
+            padding: 20px;
+        }
+        p {
+            padding: 0.2px;
         }
     </style>
   </head>
   <body>
-    <div class="main" style="background: {{ .Color }};">
+    <div class="main" style="background: {{ .Color }}">
         <div class="wrapper">
-            <h1><i>{{or .Title "TITLE"}}</i></h1>
-            <p>{{or .Description "SET environment variables TITLE & DESCRIPTION to customize these."}}</p>
+            <div style="display: block; text-align: left;">
+                <h1><i>{{or .Title "MySQL Connection"}}</i></h1>
+            </div>
+            <div style="display: block; text-align: left;">
+                <p><b>Connection Status:</b> {{ .Status }}</p>
+                <p><b>Host:</b> {{ .DB_Host }}</p>
+                <p><b>DB User:</b> {{ .DB_User }}</p>
+                <p><b>Database Name:</b> {{ .DB_Database }}</p>
+                <p><b>Message:</b> {{ .Message }}</p>
+            </div>
         </div>
     </div>
   </body>

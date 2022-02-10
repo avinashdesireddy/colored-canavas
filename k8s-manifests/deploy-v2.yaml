@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: colored-canavas
+spec:
+  selector:
+    matchLabels:
+      app: canavas
+  template:
+    metadata:
+      labels:
+        app: canavas
+    spec:
+      containers:
+      - name: blue
+        image: avinashdesireddy/colored-canavas:v2
+        imagePullPolicy: Always
+        env:
+        - name: COLOR
+          value: "#7f77c9"
+        - name: TITLE
+          value: "Demo"
+        - name: DESCRIPTION
+          value: "Colored Canavas demo"
+        - name: API_ENDPOINT
+          value: "https://httpbin.org/get"
+        envFrom:
+        - secretRef:
+            name: app-secret
+      - name: simple-webapp-mysql
+        image: kodekloud/simple-webapp-mysql
+        ports:
+        - containerPort: 8080
+          env:
+          - name: DB_Host
+            value: ""
+          - name: DB_Database
+            value: ""
+          - name: DB_User
+            value: ""
+          - name: DB_Password
+            value: ""
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: canavas
+spec:
+  selector:
+    app: canavas
+  ports:
+  - port: 8080
+    targetPort: 8080
