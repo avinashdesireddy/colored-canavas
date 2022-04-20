@@ -1,7 +1,7 @@
 FROM golang
 
 WORKDIR /go/src/app
-COPY . .
+COPY app/ .
 
 RUN go build main.go
 

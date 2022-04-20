@@ -33,7 +33,7 @@ type DBConnectionPageVars struct {
 	DB_Database string
 	DB_User     string
 	Status      bool
-    Message     string
+	Message     string
 }
 
 func main() {
@@ -70,7 +70,7 @@ func APIStatus(w http.ResponseWriter, r *http.Request) {
 		StatusMessage: message,
 	}
 
-	t, err := template.ParseFiles("api.html")
+	t, err := template.ParseFiles("templates/api.html")
 	if err != nil {
 		log.Print("Template parsing error: ", err)
 	}
@@ -86,25 +86,25 @@ func MySQL(w http.ResponseWriter, r *http.Request) {
 	DB_User := os.Getenv("DB_User")
 	DB_Password := os.Getenv("DB_Password")
 	var status bool
-    var statusMessage string
+	var statusMessage string
 
-    mysql_string := DB_User+":"+DB_Password+"@tcp("+DB_Host+":3306)/"+DB_Database+"?timeout=5s"
+	mysql_string := DB_User + ":" + DB_Password + "@tcp(" + DB_Host + ":3306)/" + DB_Database + "?timeout=5s"
 	db, err := sql.Open("mysql", mysql_string)
 	if err != nil {
-        log.Printf("Error %s when opening DB\n", err)
+		log.Printf("Error %s when opening DB\n", err)
 		status = false
 	}
 	defer db.Close()
 
-    err = db.Ping()
+	err = db.Ping()
 
-    if err != nil {
-        statusMessage = err.Error()
-        status = false
-    } else {
-        statusMessage = "Connected"
-        status = true
-    }
+	if err != nil {
+		statusMessage = err.Error()
+		status = false
+	} else {
+		statusMessage = "Connected"
+		status = true
+	}
 
 	MySQLPageVars := DBConnectionPageVars{
 		Color:       os.Getenv("COLOR"),
@@ -113,10 +113,10 @@ func MySQL(w http.ResponseWriter, r *http.Request) {
 		DB_Database: DB_Database,
 		DB_User:     DB_User,
 		Status:      status,
-        Message:     statusMessage,
+		Message:     statusMessage,
 	}
 
-	t, err := template.ParseFiles("mysql.html")
+	t, err := template.ParseFiles("templates/mysql.html")
 	if err != nil {
 		log.Print("Template parsing error: ", err)
 	}
@@ -133,7 +133,7 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 		Description: os.Getenv("DESCRIPTION"),
 	}
 
-	t, err := template.ParseFiles("homepage.html")
+	t, err := template.ParseFiles("templates/homepage.html")
 	if err != nil {
 		log.Print("Template parsing error: ", err)
 	}
