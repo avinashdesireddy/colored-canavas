@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: colored-canavas
 spec:
+  replicas: 3
   selector:
     matchLabels:
       app: canavas
@@ -23,14 +24,3 @@ spec:
         - name: DESCRIPTION
           value: "Colored Canavas demo"
 
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: canavas
-spec:
-  selector:
-    app: canavas
-  ports:
-  - port: 8080
-    targetPort: 8080

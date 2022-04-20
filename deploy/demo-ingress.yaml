@@ -4,18 +4,14 @@ metadata:
   name: canavas-demo
 spec:
   ingressClassName: nginx-default
-  tls:
-  - hosts:
-    - k8s-ingress-demo.cluster.avinashdesireddy.com
-    secretName: demo-tls-secret
   rules:
-  - host: k8s-ingress-demo.cluster.avinashdesireddy.com
+  - host: canavas-demo.cluster.avinashdesireddy.com
     http:
       paths:
       - pathType: Prefix
         path: "/"
         backend:
           service:
-            name: demo
+            name: canavas
             port:
               number: 80
